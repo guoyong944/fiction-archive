@@ -20,9 +20,15 @@ test("home page contains the archive controls and all article cards", () => {
   const html = fs.readFileSync(path.join(docs, "index.html"), "utf8");
   assert.match(html, /id="work-search"/);
   assert.match(html, /data-filter="2020"/);
+  assert.match(html, /class="active" data-sort="rank">我的排名/);
+  assert.match(html, /data-sort="date">时间最新/);
+  assert.match(html, /data-sort="length">篇幅最长/);
   assert.equal((html.match(/class="work-card/g) ?? []).length, 16);
   assert.match(html, /近地飞行/);
   assert.match(html, /狼王/);
+  assert.ok(html.indexOf("狼王") < html.indexOf("下沉"));
+  assert.ok(html.indexOf("下沉") < html.indexOf("船长"));
+  assert.ok(html.lastIndexOf("近地飞行") > html.indexOf("空姐，学妹和辣条"));
 });
 
 test("article pages retain long-form content and source metadata", () => {

@@ -23,11 +23,28 @@
   }
 
   const search = document.querySelector("#work-search");
+  const grid = document.querySelector("#work-grid");
   const cards = [...document.querySelectorAll(".work-card")];
   const filters = [...document.querySelectorAll("[data-filter]")];
+  const sortButtons = [...document.querySelectorAll("[data-sort]")];
   const count = document.querySelector("#result-count");
   const empty = document.querySelector(".empty-state");
   let activeYear = "all";
+  let activeSort = "rank";
+
+  const sortWorks = () => {
+    if (!grid || !cards.length) return;
+    const sorted = [...cards].sort((a, b) => {
+      if (activeSort === "date") {
+        return (b.dataset.date || "").localeCompare(a.dataset.date || "");
+      }
+      if (activeSort === "length") {
+        return Number(b.dataset.length || 0) - Number(a.dataset.length || 0);
+      }
+      return Number(a.dataset.rank || 999) - Number(b.dataset.rank || 999);
+    });
+    sorted.forEach((card) => grid.appendChild(card));
+  };
 
   const filterWorks = () => {
     if (!cards.length) return;
@@ -52,4 +69,12 @@
       filterWorks();
     });
   });
+  sortButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeSort = button.dataset.sort || "rank";
+      sortButtons.forEach((item) => item.classList.toggle("active", item === button));
+      sortWorks();
+    });
+  });
+  sortWorks();
 })();

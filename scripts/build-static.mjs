@@ -15,6 +15,25 @@ const featuredTitles = new Set([
   "一个车辆工程毕业生之死",
 ]);
 
+const recommendationRank = new Map([
+  ["狼王", 1],
+  ["下沉", 2],
+  ["船长", 3],
+  ["立交桥", 4],
+  ["一个车辆工程毕业生之死", 5],
+  ["最后的诗人", 6],
+  ["你离开了米兰从此没有人陪我说话", 7],
+  ["波罗的海与蘑菇", 8],
+  ["退潮", 9],
+  ["钟楼", 10],
+  ["在凌晨三点雨夜的上海骑小黄车是一件很朋克的事", 11],
+  ["拉面店", 12],
+  ["无可救药的世界和屎一样的我们", 13],
+  ["23岁时候的我都在想些什么", 14],
+  ["空姐，学妹和辣条", 15],
+  ["近地飞行", 16],
+]);
+
 const editorial = {
   "立交桥": ["城市边缘", "青春", "逃亡"],
   "船长": ["港口", "漂泊", "老张"],
@@ -91,6 +110,7 @@ function parseArticle(filename) {
     tags: editorial[title] ?? ["作品"],
     featured: featuredTitles.has(title),
     isNew: title === "近地飞行",
+    rank: recommendationRank.get(title) ?? 999,
   };
 }
 
@@ -147,7 +167,7 @@ function shell({ title, description, assetPrefix, homePrefix, body, pageClass = 
 
 function card(article) {
   const search = [article.title, article.excerpt, article.author, ...article.tags].join(" ");
-  return `<article class="work-card${article.featured ? " featured" : ""}" data-year="${article.year}" data-search="${escapeHtml(search.toLowerCase())}">
+  return `<article class="work-card${article.featured ? " featured" : ""}" data-year="${article.year}" data-date="${article.date}" data-length="${article.charCount}" data-rank="${article.rank}" data-search="${escapeHtml(search.toLowerCase())}">
     <a href="articles/${encodeURIComponent(article.slug)}/" aria-label="阅读《${escapeHtml(article.title)}》">
       <div class="card-topline">
         <time datetime="${article.date}">${article.date.replaceAll("-", ".")}</time>
@@ -166,6 +186,7 @@ function card(article) {
 function buildIndex(articles) {
   const years = [...new Set(articles.map((article) => article.year))].sort((a, b) => b.localeCompare(a));
   const originals = articles.filter((article) => !article.isNew);
+  const rankedArticles = [...articles].sort((a, b) => a.rank - b.rank);
   const body = `<main id="main">
     <section class="hero">
       <p class="eyebrow">A FICTION ARCHIVE · 2015—2026</p>
@@ -187,12 +208,21 @@ function buildIndex(articles) {
       </div>
       <div class="archive-tools">
         <label class="search-field"><span aria-hidden="true">⌕</span><span class="sr-only">搜索作品</span><input id="work-search" type="search" placeholder="搜索标题、主题或人物" autocomplete="off"></label>
-        <div class="year-filters" role="group" aria-label="按年份筛选">
-          <button type="button" class="active" data-filter="all">全部</button>
-          ${years.map((year) => `<button type="button" data-filter="${year}">${year}</button>`).join("")}
+        <div class="tool-groups">
+          <div class="sort-controls" role="group" aria-label="作品排序">
+            <span class="control-label">排序</span>
+            <button type="button" class="active" data-sort="rank">我的排名</button>
+            <button type="button" data-sort="date">时间最新</button>
+            <button type="button" data-sort="length">篇幅最长</button>
+          </div>
+          <div class="year-filters" role="group" aria-label="按年份筛选">
+            <span class="control-label">年份</span>
+            <button type="button" class="active" data-filter="all">全部</button>
+            ${years.map((year) => `<button type="button" data-filter="${year}">${year}</button>`).join("")}
+          </div>
         </div>
       </div>
-      <div class="work-grid" id="work-grid">${articles.map(card).join("\n")}</div>
+      <div class="work-grid" id="work-grid">${rankedArticles.map(card).join("\n")}</div>
       <p class="empty-state" hidden>没有找到相符的作品。</p>
     </section>
 

@@ -167,7 +167,7 @@ button { color: inherit; }
   margin: 3rem 0 2rem;
   display: flex;
   gap: 1.5rem;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 .search-field {
@@ -187,8 +187,10 @@ button { color: inherit; }
 }
 .search-field:focus-within { border-color: var(--accent); }
 .search-field input::placeholder { color: var(--muted); }
-.year-filters { display: flex; gap: .35rem; overflow-x: auto; scrollbar-width: none; }
-.year-filters button {
+.tool-groups { display: grid; gap: .8rem; justify-items: end; }
+.sort-controls, .year-filters { display: flex; align-items: center; gap: .35rem; overflow-x: auto; scrollbar-width: none; }
+.control-label { margin-right: .25rem; color: var(--muted); font-size: .68rem; letter-spacing: .08em; }
+.sort-controls button, .year-filters button {
   padding: .45rem .75rem;
   color: var(--muted);
   background: transparent;
@@ -197,6 +199,8 @@ button { color: inherit; }
   cursor: pointer;
   font-size: .75rem;
 }
+.sort-controls button:hover,
+.sort-controls button.active,
 .year-filters button:hover,
 .year-filters button.active { color: var(--ink); border-color: var(--hairline); }
 .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--hairline); border-left: 1px solid var(--hairline); }
@@ -361,7 +365,8 @@ button { color: inherit; }
   .archive { padding: 4rem 0; }
   .archive-tools { align-items: stretch; flex-direction: column; }
   .search-field { width: 100%; }
-  .year-filters { padding-bottom: .2rem; }
+  .tool-groups { justify-items: stretch; }
+  .sort-controls, .year-filters { padding-bottom: .2rem; }
   .work-grid { grid-template-columns: 1fr; }
   .work-card a { min-height: 325px; }
   .work-card h3 { font-size: 1.7rem; }
