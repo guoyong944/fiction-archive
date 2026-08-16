@@ -211,7 +211,7 @@ function buildIndex(articles) {
         <div class="tool-groups">
           <div class="select-controls">
             <label class="select-control" for="sort-select"><span>排序</span><select id="sort-select">
-              <option value="rank" selected>我的排名</option>
+              <option value="rank" selected>最佳作品</option>
               <option value="date">时间最新</option>
               <option value="length">篇幅最长</option>
             </select></label>
