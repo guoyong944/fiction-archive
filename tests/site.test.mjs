@@ -31,6 +31,9 @@ test("article pages retain long-form content and source metadata", () => {
   assert.match(wolf, /孙成功/);
   assert.match(wolf, /查看原始发布/);
   assert.match(flight, /北陵国际机场/);
+  assert.match(flight, /老张/);
+  assert.doesNotMatch(flight, /阿孟/);
+  assert.match(flight, /class="ai-label article-ai-label">AI 创作/);
   assert.match(flight, /Codex/);
 });
 

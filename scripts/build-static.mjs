@@ -151,7 +151,7 @@ function card(article) {
     <a href="articles/${encodeURIComponent(article.slug)}/" aria-label="阅读《${escapeHtml(article.title)}》">
       <div class="card-topline">
         <time datetime="${article.date}">${article.date.replaceAll("-", ".")}</time>
-        <span>${article.minutes} 分钟</span>
+        <span class="card-meta">${article.isNew ? '<strong class="ai-label ai-label-small">AI 创作</strong>' : ""}<span>${article.minutes} 分钟</span></span>
       </div>
       <h3>${escapeHtml(article.title)}</h3>
       <p>${escapeHtml(article.excerpt)}</p>
@@ -219,13 +219,13 @@ function buildArticle(article, index, articles) {
   const chips = article.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
   const source = article.originalUrl
     ? `<a href="${escapeHtml(article.originalUrl)}" target="_blank" rel="noreferrer">查看原始发布 ↗</a>`
-    : "<span>本站新增作品</span>";
+    : "<span>AI 协作新作</span>";
   const body = `<main id="main" class="article-page">
     <article>
       <header class="article-hero">
         <a class="back-link" href="../../">← 返回作品档案</a>
         <div class="article-kicker"><time datetime="${article.date}">${article.date.replaceAll("-", " / ")}</time><span>${article.minutes} 分钟阅读</span></div>
-        <h1>${escapeHtml(article.title)}</h1>
+${article.isNew ? '        <strong class="ai-label article-ai-label">AI 创作</strong>\n' : ""}        <h1>${escapeHtml(article.title)}</h1>
         <p class="article-byline">${escapeHtml(article.author)}${article.account ? ` · ${escapeHtml(article.account)}` : ""}</p>
         <div class="article-tags">${chips}</div>
       </header>
@@ -242,7 +242,7 @@ function buildArticle(article, index, articles) {
   const dir = path.join(outputDir, "articles", article.slug);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, "index.html"), shell({
-    title: `${article.title} · DE 101`,
+    title: `${article.isNew ? "AI 创作 · " : ""}${article.title} · DE 101`,
     description: article.excerpt,
     assetPrefix: "../../",
     homePrefix: "../../",
@@ -265,7 +265,7 @@ function buildAbout(articles) {
         <h2>反复出现的人与地方</h2>
         <p>老张、小卫、阿豪等人物以不同身份重返故事。网吧、海港、桥、火车、烟雾与探照灯也不断变形复现。这里并不追求一条可以核对的现实时间线，而是在建立一座由记忆、虚构和自我投射组成的私人城市。</p>
         <h2>关于《近地飞行》</h2>
-        <p>《近地飞行》由 Codex 在完整阅读原作后创作。它吸收了这些作品对失败者、远行和城市废墟的持续关注，但采用新人物、新地点与独立情节；页面明确保留作者标注，以区别于十五篇原作。</p>
+        <p>《近地飞行》由 Codex 在完整阅读原作后创作。它吸收了这些作品对失败者、远行和城市废墟的持续关注，沿用“老张”这一反复出现的人物，并采用新地点与独立情节；页面在标题处明确标注“AI 创作”，以区别于十五篇原作。</p>
         <h2>存档说明</h2>
         <p>正文依据本地文本整理，保留原始发布日期、作者署名和可用的公众号链接。原文中以“图片”标记但未随文本保存的内容，在相应位置注明缺失，没有使用替代图片。</p>
         <a class="text-link" href="../">进入作品档案 <span aria-hidden="true">→</span></a>
