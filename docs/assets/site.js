@@ -26,10 +26,12 @@
   const grid = document.querySelector("#work-grid");
   const cards = [...document.querySelectorAll(".work-card")];
   const filters = [...document.querySelectorAll("[data-filter]")];
-  const sortButtons = [...document.querySelectorAll("[data-sort]")];
+  const sortSelect = document.querySelector("#sort-select");
+  const categorySelect = document.querySelector("#category-select");
   const count = document.querySelector("#result-count");
   const empty = document.querySelector(".empty-state");
   let activeYear = "all";
+  let activeCategory = "all";
   let activeSort = "rank";
 
   const sortWorks = () => {
@@ -52,8 +54,9 @@
     let visible = 0;
     cards.forEach((card) => {
       const yearMatches = activeYear === "all" || card.dataset.year === activeYear;
+      const categoryMatches = activeCategory === "all" || card.dataset.category === activeCategory;
       const searchMatches = !query || (card.dataset.search || "").includes(query);
-      const show = yearMatches && searchMatches;
+      const show = yearMatches && categoryMatches && searchMatches;
       card.hidden = !show;
       if (show) visible += 1;
     });
@@ -69,12 +72,13 @@
       filterWorks();
     });
   });
-  sortButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      activeSort = button.dataset.sort || "rank";
-      sortButtons.forEach((item) => item.classList.toggle("active", item === button));
-      sortWorks();
-    });
+  sortSelect?.addEventListener("change", () => {
+    activeSort = sortSelect.value || "rank";
+    sortWorks();
+  });
+  categorySelect?.addEventListener("change", () => {
+    activeCategory = categorySelect.value || "all";
+    filterWorks();
   });
   sortWorks();
 })();

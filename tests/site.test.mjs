@@ -20,9 +20,15 @@ test("home page contains the archive controls and all article cards", () => {
   const html = fs.readFileSync(path.join(docs, "index.html"), "utf8");
   assert.match(html, /id="work-search"/);
   assert.match(html, /data-filter="2020"/);
-  assert.match(html, /class="active" data-sort="rank">我的排名/);
-  assert.match(html, /data-sort="date">时间最新/);
-  assert.match(html, /data-sort="length">篇幅最长/);
+  assert.match(html, /id="sort-select"/);
+  assert.match(html, /value="rank" selected>我的排名/);
+  assert.match(html, /value="date">时间最新/);
+  assert.match(html, /value="length">篇幅最长/);
+  assert.match(html, /id="category-select"/);
+  assert.match(html, /value="original">原创/);
+  assert.match(html, /value="ai">AI 创作/);
+  assert.equal((html.match(/data-category="original"/g) ?? []).length, 15);
+  assert.equal((html.match(/data-category="ai"/g) ?? []).length, 1);
   assert.equal((html.match(/class="work-card/g) ?? []).length, 16);
   assert.match(html, /近地飞行/);
   assert.match(html, /狼王/);

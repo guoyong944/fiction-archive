@@ -188,9 +188,34 @@ button { color: inherit; }
 .search-field:focus-within { border-color: var(--accent); }
 .search-field input::placeholder { color: var(--muted); }
 .tool-groups { display: grid; gap: .8rem; justify-items: end; }
-.sort-controls, .year-filters { display: flex; align-items: center; gap: .35rem; overflow-x: auto; scrollbar-width: none; }
+.select-controls { display: flex; align-items: center; gap: .65rem; }
+.select-control {
+  min-width: 148px;
+  padding: .45rem .7rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: .55rem;
+  color: var(--muted);
+  border: 1px solid var(--hairline);
+  border-radius: 2rem;
+  font-size: .68rem;
+}
+.select-control span { letter-spacing: .08em; }
+.select-control select {
+  min-width: 0;
+  padding: 0 1.2rem 0 0;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  font-size: .75rem;
+}
+.select-control:focus-within { border-color: var(--accent); }
+.year-filters { display: flex; align-items: center; gap: .35rem; overflow-x: auto; scrollbar-width: none; }
 .control-label { margin-right: .25rem; color: var(--muted); font-size: .68rem; letter-spacing: .08em; }
-.sort-controls button, .year-filters button {
+.year-filters button {
   padding: .45rem .75rem;
   color: var(--muted);
   background: transparent;
@@ -199,8 +224,6 @@ button { color: inherit; }
   cursor: pointer;
   font-size: .75rem;
 }
-.sort-controls button:hover,
-.sort-controls button.active,
 .year-filters button:hover,
 .year-filters button.active { color: var(--ink); border-color: var(--hairline); }
 .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--hairline); border-left: 1px solid var(--hairline); }
@@ -366,7 +389,9 @@ button { color: inherit; }
   .archive-tools { align-items: stretch; flex-direction: column; }
   .search-field { width: 100%; }
   .tool-groups { justify-items: stretch; }
-  .sort-controls, .year-filters { padding-bottom: .2rem; }
+  .select-controls { display: grid; grid-template-columns: 1fr 1fr; }
+  .select-control { min-width: 0; }
+  .year-filters { padding-bottom: .2rem; }
   .work-grid { grid-template-columns: 1fr; }
   .work-card a { min-height: 325px; }
   .work-card h3 { font-size: 1.7rem; }

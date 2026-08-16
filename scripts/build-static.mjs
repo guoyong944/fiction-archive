@@ -167,7 +167,7 @@ function shell({ title, description, assetPrefix, homePrefix, body, pageClass = 
 
 function card(article) {
   const search = [article.title, article.excerpt, article.author, ...article.tags].join(" ");
-  return `<article class="work-card${article.featured ? " featured" : ""}" data-year="${article.year}" data-date="${article.date}" data-length="${article.charCount}" data-rank="${article.rank}" data-search="${escapeHtml(search.toLowerCase())}">
+  return `<article class="work-card${article.featured ? " featured" : ""}" data-year="${article.year}" data-category="${article.isNew ? "ai" : "original"}" data-date="${article.date}" data-length="${article.charCount}" data-rank="${article.rank}" data-search="${escapeHtml(search.toLowerCase())}">
     <a href="articles/${encodeURIComponent(article.slug)}/" aria-label="阅读《${escapeHtml(article.title)}》">
       <div class="card-topline">
         <time datetime="${article.date}">${article.date.replaceAll("-", ".")}</time>
@@ -209,11 +209,17 @@ function buildIndex(articles) {
       <div class="archive-tools">
         <label class="search-field"><span aria-hidden="true">⌕</span><span class="sr-only">搜索作品</span><input id="work-search" type="search" placeholder="搜索标题、主题或人物" autocomplete="off"></label>
         <div class="tool-groups">
-          <div class="sort-controls" role="group" aria-label="作品排序">
-            <span class="control-label">排序</span>
-            <button type="button" class="active" data-sort="rank">我的排名</button>
-            <button type="button" data-sort="date">时间最新</button>
-            <button type="button" data-sort="length">篇幅最长</button>
+          <div class="select-controls">
+            <label class="select-control" for="sort-select"><span>排序</span><select id="sort-select">
+              <option value="rank" selected>我的排名</option>
+              <option value="date">时间最新</option>
+              <option value="length">篇幅最长</option>
+            </select></label>
+            <label class="select-control" for="category-select"><span>类型</span><select id="category-select">
+              <option value="all" selected>全部作品</option>
+              <option value="original">原创</option>
+              <option value="ai">AI 创作</option>
+            </select></label>
           </div>
           <div class="year-filters" role="group" aria-label="按年份筛选">
             <span class="control-label">年份</span>
