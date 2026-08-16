@@ -45,3 +45,18 @@ test("every generated article has valid relative assets", () => {
     assert.match(html, /src="\.\.\/\.\.\/assets\/site\.js"/);
   }
 });
+
+test("public pages use the neutral archive identity", () => {
+  const publicFiles = [
+    path.join(docs, "index.html"),
+    path.join(docs, "about", "index.html"),
+    ...fs.readdirSync(path.join(docs, "articles")).map((folder) =>
+      path.join(docs, "articles", folder, "index.html")
+    ),
+  ];
+  for (const filename of publicFiles) {
+    const html = fs.readFileSync(filename, "utf8");
+    assert.doesNotMatch(html, /DE\s*101/i);
+  }
+  assert.match(fs.readFileSync(path.join(docs, "index.html"), "utf8"), /失重档案/);
+});

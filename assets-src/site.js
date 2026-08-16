@@ -3,7 +3,7 @@
   const themeButton = document.querySelector(".theme-toggle");
   const applyTheme = (theme) => {
     root.dataset.theme = theme;
-    try { localStorage.setItem("de101-theme", theme); } catch (_) {}
+    try { localStorage.setItem("fiction-archive-theme", theme); } catch (_) {}
   };
 
   themeButton?.addEventListener("click", () => {

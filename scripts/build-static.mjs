@@ -122,13 +122,13 @@ function shell({ title, description, assetPrefix, homePrefix, body, pageClass = 
   <meta name="description" content="${escapeHtml(description)}">
   <title>${escapeHtml(title)}</title>
   <link rel="stylesheet" href="${assetPrefix}assets/styles.css">
-  <script>try{document.documentElement.dataset.theme=localStorage.getItem('de101-theme')||'light'}catch(e){}</script>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('fiction-archive-theme')||'light'}catch(e){}</script>
 </head>
 <body class="${pageClass}">
   <a class="skip-link" href="#main">跳到正文</a>
   <div class="reading-progress" aria-hidden="true"><span></span></div>
   <header class="site-header">
-    <a class="wordmark" href="${homePrefix}"><span>DE</span> 101</a>
+    <a class="wordmark" href="${homePrefix}"><span>失重</span>档案</a>
     <nav aria-label="主导航">
       <a href="${homePrefix}">作品</a>
       <a href="${homePrefix}about/">关于</a>
@@ -137,7 +137,7 @@ function shell({ title, description, assetPrefix, homePrefix, body, pageClass = 
   </header>
   ${body}
   <footer class="site-footer">
-    <p>DE 101 作品档案 · 2015—2026</p>
+    <p>失重档案 · 2015—2026</p>
     <p>保留粗粝，也保留那些没有说完的话。</p>
   </footer>
   <script src="${assetPrefix}assets/site.js" defer></script>
@@ -204,7 +204,7 @@ function buildIndex(articles) {
     </section>
   </main>`;
   fs.writeFileSync(path.join(outputDir, "index.html"), shell({
-    title: "DE 101 · 作品档案",
+    title: "失重档案 · 小说作品集",
     description: "十五篇旧作与一篇新作：关于县城、港口、网吧、异乡，以及始终没有找到归宿的人。",
     assetPrefix: "",
     homePrefix: "./",
@@ -226,7 +226,7 @@ function buildArticle(article, index, articles) {
         <a class="back-link" href="../../">← 返回作品档案</a>
         <div class="article-kicker"><time datetime="${article.date}">${article.date.replaceAll("-", " / ")}</time><span>${article.minutes} 分钟阅读</span></div>
 ${article.isNew ? '        <strong class="ai-label article-ai-label">AI 创作</strong>\n' : ""}        <h1>${escapeHtml(article.title)}</h1>
-        <p class="article-byline">${escapeHtml(article.author)}${article.account ? ` · ${escapeHtml(article.account)}` : ""}</p>
+        <p class="article-byline">${escapeHtml(article.author)}</p>
         <div class="article-tags">${chips}</div>
       </header>
       <div class="article-rule"><span></span></div>
@@ -242,7 +242,7 @@ ${article.isNew ? '        <strong class="ai-label article-ai-label">AI 创作</
   const dir = path.join(outputDir, "articles", article.slug);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, "index.html"), shell({
-    title: `${article.isNew ? "AI 创作 · " : ""}${article.title} · DE 101`,
+    title: `${article.isNew ? "AI 创作 · " : ""}${article.title} · 失重档案`,
     description: article.excerpt,
     assetPrefix: "../../",
     homePrefix: "../../",
@@ -275,8 +275,8 @@ function buildAbout(articles) {
   const dir = path.join(outputDir, "about");
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, "index.html"), shell({
-    title: "关于 · DE 101 作品档案",
-    description: "关于 DE 101 作品档案、反复出现的人物与意象，以及协作新作《近地飞行》。",
+    title: "关于 · 失重档案",
+    description: "关于失重档案、反复出现的人物与意象，以及协作新作《近地飞行》。",
     assetPrefix: "../",
     homePrefix: "../",
     body,
