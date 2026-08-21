@@ -50,7 +50,7 @@ test("article pages retain long-form content and source metadata", () => {
   const wolf = fs.readFileSync(path.join(docs, "articles", "狼王", "index.html"), "utf8");
   const flight = fs.readFileSync(path.join(docs, "articles", "近地飞行", "index.html"), "utf8");
   assert.match(wolf, /孙成功/);
-  assert.match(wolf, /查看原始发布/);
+  assert.doesNotMatch(wolf, /查看原始发布/);
   assert.match(flight, /北陵国际机场/);
   assert.match(flight, /老张/);
   assert.doesNotMatch(flight, /阿孟/);
@@ -72,6 +72,15 @@ test("every article ends with its own commentary", () => {
   assert.match(wolf, /个人兴衰与网吧时代的更替重合/);
   const flight = fs.readFileSync(path.join(docs, "articles", "近地飞行", "index.html"), "utf8");
   assert.match(flight, /像一个档案尾声/);
+});
+
+test("article pages do not link to the original publication", () => {
+  const folders = fs.readdirSync(path.join(docs, "articles"));
+  for (const folder of folders) {
+    const html = fs.readFileSync(path.join(docs, "articles", folder, "index.html"), "utf8");
+    assert.doesNotMatch(html, /查看原始发布/);
+    assert.doesNotMatch(html, /mp\.weixin\.qq\.com/);
+  }
 });
 
 test("adult articles require an 18+ confirmation before reading", () => {

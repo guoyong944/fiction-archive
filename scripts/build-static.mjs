@@ -405,9 +405,6 @@ function buildArticle(article, index, articles) {
   const previous = articles[index - 1];
   const next = articles[index + 1];
   const chips = article.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
-  const source = article.originalUrl
-    ? `<a href="${escapeHtml(article.originalUrl)}" target="_blank" rel="noreferrer">查看原始发布 ↗</a>`
-    : "<span>AI 协作新作</span>";
   const ageGate = article.adultWarning
     ? `<section class="age-gate" data-age-gate data-article="${escapeHtml(article.slug)}" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-describedby="age-gate-description">
     <div class="age-gate-panel">
@@ -437,7 +434,7 @@ ${article.isNew ? '        <strong class="ai-label article-ai-label">AI 创作</
       <div class="article-rule"><span></span></div>
       ${article.note ? `<aside class="article-note"><strong>编者说明</strong><p>${escapeHtml(article.note)}</p></aside>` : ""}
       <div class="prose">${renderBody(article.bodyLines)}</div>
-      <footer class="article-source"><p>初次发布于 ${article.date}</p>${source}</footer>
+      <footer class="article-source"><p>初次发布于 ${article.date}</p></footer>
       <aside class="article-commentary" aria-labelledby="article-commentary-title">
         <header><p class="eyebrow">COMMENTARY</p><h2 id="article-commentary-title">评论</h2></header>
         <div class="article-commentary-grid">
