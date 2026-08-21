@@ -42,7 +42,10 @@ test("home page publishes the archive commentary and fifteen original reviews", 
   assert.match(html, /<section class="criticism" id="criticism"/);
   assert.match(html, /一部被拆散的反成长小说/);
   assert.match(html, /逃离，以及从未抵达/);
-  assert.equal((html.match(/<article><p class="eyebrow">MOTIF<\/p>/g) ?? []).length, 4);
+  assert.match(html, /内在结构：一棵村上春树/);
+  assert.match(html, /写作，是抵抗遗忘/);
+  assert.match(html, /身体不断远行，精神原地踏步/);
+  assert.equal((html.match(/<article><p class="eyebrow">MOTIF<\/p>/g) ?? []).length, 6);
   assert.equal((html.match(/class="criticism-card"/g) ?? []).length, 15);
 });
 
@@ -69,7 +72,9 @@ test("every article ends with its own commentary", () => {
   }
 
   const wolf = fs.readFileSync(path.join(docs, "articles", "狼王", "index.html"), "utf8");
-  assert.match(wolf, /个人兴衰与网吧时代的更替重合/);
+  assert.match(wolf, /十五篇中完成度最高的作品之一/);
+  const sinking = fs.readFileSync(path.join(docs, "articles", "下沉", "index.html"), "utf8");
+  assert.match(sinking, /最接近中篇小说的一篇/);
   const flight = fs.readFileSync(path.join(docs, "articles", "近地飞行", "index.html"), "utf8");
   assert.match(flight, /像一个档案尾声/);
 });
