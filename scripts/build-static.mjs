@@ -1,11 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDir = path.join(root, "content");
 const outputDir = path.join(root, "docs");
 const assetDir = path.join(root, "assets-src");
+const assetVersion = createHash("sha256")
+  .update(fs.readFileSync(path.join(assetDir, "styles.css")))
+  .update(fs.readFileSync(path.join(assetDir, "site.js")))
+  .digest("hex")
+  .slice(0, 8);
 
 const featuredTitles = new Set([
   "狼王",
@@ -152,7 +158,7 @@ function shell({ title, description, assetPrefix, homePrefix, body, pageClass = 
   <meta name="theme-color" content="#f2eee5">
   <meta name="description" content="${escapeHtml(description)}">
   <title>${escapeHtml(title)}</title>
-  <link rel="stylesheet" href="${assetPrefix}assets/styles.css">
+  <link rel="stylesheet" href="${assetPrefix}assets/styles.css?v=${assetVersion}">
   <script>try{document.documentElement.dataset.theme=localStorage.getItem('fiction-archive-theme')||'light'}catch(e){}</script>
 </head>
 <body class="${pageClass}">
@@ -171,7 +177,7 @@ function shell({ title, description, assetPrefix, homePrefix, body, pageClass = 
     <p>失重档案 · 2015—2026</p>
     <p>保留粗粝，也保留那些没有说完的话。</p>
   </footer>
-  <script src="${assetPrefix}assets/site.js" defer></script>
+  <script src="${assetPrefix}assets/site.js?v=${assetVersion}" defer></script>
 </body>
 </html>`;
 }

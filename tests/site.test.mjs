@@ -83,8 +83,8 @@ test("every generated article has valid relative assets", () => {
   const folders = fs.readdirSync(path.join(docs, "articles"));
   for (const folder of folders) {
     const html = fs.readFileSync(path.join(docs, "articles", folder, "index.html"), "utf8");
-    assert.match(html, /href="\.\.\/\.\.\/assets\/styles\.css"/);
-    assert.match(html, /src="\.\.\/\.\.\/assets\/site\.js"/);
+    assert.match(html, /href="\.\.\/\.\.\/assets\/styles\.css\?v=[a-f0-9]{8}"/);
+    assert.match(html, /src="\.\.\/\.\.\/assets\/site\.js\?v=[a-f0-9]{8}"/);
   }
 });
 
