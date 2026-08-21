@@ -37,6 +37,15 @@ test("home page contains the archive controls and all article cards", () => {
   assert.ok(html.lastIndexOf("近地飞行") > html.indexOf("空姐，学妹和辣条"));
 });
 
+test("home page publishes the archive commentary and fifteen original reviews", () => {
+  const html = fs.readFileSync(path.join(docs, "index.html"), "utf8");
+  assert.match(html, /<section class="criticism" id="criticism"/);
+  assert.match(html, /一部被拆散的反成长小说/);
+  assert.match(html, /逃离，以及从未抵达/);
+  assert.equal((html.match(/<article><p class="eyebrow">MOTIF<\/p>/g) ?? []).length, 4);
+  assert.equal((html.match(/class="criticism-card"/g) ?? []).length, 15);
+});
+
 test("article pages retain long-form content and source metadata", () => {
   const wolf = fs.readFileSync(path.join(docs, "articles", "狼王", "index.html"), "utf8");
   const flight = fs.readFileSync(path.join(docs, "articles", "近地飞行", "index.html"), "utf8");
@@ -47,6 +56,22 @@ test("article pages retain long-form content and source metadata", () => {
   assert.doesNotMatch(flight, /阿孟/);
   assert.match(flight, /class="ai-label article-ai-label">AI 创作/);
   assert.match(flight, /Codex/);
+});
+
+test("every article ends with its own commentary", () => {
+  const folders = fs.readdirSync(path.join(docs, "articles"));
+  for (const folder of folders) {
+    const html = fs.readFileSync(path.join(docs, "articles", folder, "index.html"), "utf8");
+    assert.match(html, /class="article-commentary"/);
+    assert.match(html, />作品简述</);
+    assert.match(html, />阅读</);
+    assert.match(html, /class="article-commentary-motifs"><span>母题<\/span>/);
+  }
+
+  const wolf = fs.readFileSync(path.join(docs, "articles", "狼王", "index.html"), "utf8");
+  assert.match(wolf, /个人兴衰与网吧时代的更替重合/);
+  const flight = fs.readFileSync(path.join(docs, "articles", "近地飞行", "index.html"), "utf8");
+  assert.match(flight, /像一个档案尾声/);
 });
 
 test("adult articles require an 18+ confirmation before reading", () => {
