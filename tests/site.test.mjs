@@ -96,6 +96,10 @@ test("adult articles require an 18+ confirmation before reading", () => {
   const wolf = fs.readFileSync(path.join(docs, "articles", "狼王", "index.html"), "utf8");
   assert.doesNotMatch(wolf, /data-age-gate/);
 
+  const captain = fs.readFileSync(path.join(docs, "articles", "船长", "index.html"), "utf8");
+  assert.match(captain, /《船长》包含成人内容/);
+  assert.doesNotMatch(captain, /性交易及性描写/);
+
   const home = fs.readFileSync(path.join(docs, "index.html"), "utf8");
   assert.doesNotMatch(home, /class="content-label"/);
 
