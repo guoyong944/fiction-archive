@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../assets/styles.css">
   <script>try{document.documentElement.dataset.theme=localStorage.getItem('fiction-archive-theme')||'light'}catch(e){}</script>
 </head>
-<body class="reading-page">
+<body class="reading-page age-restricted age-gate-pending">
   <a class="skip-link" href="#main">跳到正文</a>
   <div class="reading-progress" aria-hidden="true"><span></span></div>
   <header class="site-header">
@@ -21,7 +21,20 @@
       <button class="theme-toggle" type="button" aria-label="切换明暗主题"><span aria-hidden="true">◐</span></button>
     </nav>
   </header>
-  <main id="main" class="article-page">
+  <section class="age-gate" data-age-gate data-article="在凌晨三点雨夜的上海骑小黄车是一件很朋克的事" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-describedby="age-gate-description">
+    <div class="age-gate-panel">
+      <p class="eyebrow">CONTENT NOTICE</p>
+      <strong class="age-gate-mark" aria-hidden="true">18+</strong>
+      <h1 id="age-gate-title">请先确认你的年龄</h1>
+      <p id="age-gate-description">《在凌晨三点雨夜的上海骑小黄车是一件很朋克的事》包含毒品使用及性相关内容，仅供已满18岁的读者阅读。</p>
+      <div class="age-gate-actions">
+        <button type="button" data-age-confirm>我已满18岁，继续阅读</button>
+        <a href="../../">未满18岁，返回作品页</a>
+      </div>
+      <p class="age-gate-privacy">确认结果仅保存在当前浏览器会话中。</p>
+      <noscript><p class="age-gate-noscript">需要启用 JavaScript 才能完成年龄确认。</p></noscript>
+    </div>
+  </section><main id="main" class="article-page" data-age-restricted inert aria-hidden="true">
     <article>
       <header class="article-hero">
         <a class="back-link" href="../../">← 返回作品档案</a>

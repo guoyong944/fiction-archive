@@ -10,6 +10,35 @@
     applyTheme(root.dataset.theme === "dark" ? "light" : "dark");
   });
 
+  const ageGate = document.querySelector("[data-age-gate]");
+  if (ageGate) {
+    const article = ageGate.dataset.article || window.location.pathname;
+    const storageKey = `fiction-archive-age-confirmed:${article}`;
+    const articleMain = document.querySelector("main[data-age-restricted]");
+    const confirmButton = ageGate.querySelector("[data-age-confirm]");
+
+    const unlockArticle = () => {
+      document.body.classList.remove("age-gate-pending");
+      ageGate.hidden = true;
+      articleMain?.removeAttribute("inert");
+      articleMain?.removeAttribute("aria-hidden");
+      window.requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    };
+
+    let confirmed = false;
+    try { confirmed = sessionStorage.getItem(storageKey) === "true"; } catch (_) {}
+
+    if (confirmed) {
+      unlockArticle();
+    } else {
+      window.requestAnimationFrame(() => confirmButton?.focus());
+      confirmButton?.addEventListener("click", () => {
+        try { sessionStorage.setItem(storageKey, "true"); } catch (_) {}
+        unlockArticle();
+      });
+    }
+  }
+
   const progress = document.querySelector(".reading-progress span");
   if (progress && document.body.classList.contains("reading-page")) {
     const updateProgress = () => {

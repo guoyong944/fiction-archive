@@ -289,6 +289,72 @@ button { color: inherit; }
 }
 .site-footer p { margin: 0; }
 
+body.age-gate-pending { overflow: hidden; }
+.age-gate[hidden] { display: none; }
+.age-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  background:
+    linear-gradient(var(--hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hairline) 1px, transparent 1px),
+    var(--paper);
+  background-size: 48px 48px;
+}
+.age-gate-panel {
+  width: min(580px, 100%);
+  padding: clamp(2rem, 6vw, 4.5rem);
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--ink) 18%, transparent);
+  text-align: center;
+}
+.age-gate-panel .eyebrow { margin-bottom: 1.6rem; }
+.age-gate-mark {
+  display: block;
+  color: var(--accent);
+  font-family: Georgia, serif;
+  font-size: clamp(4.5rem, 15vw, 7.5rem);
+  font-weight: 400;
+  line-height: .9;
+  letter-spacing: -.06em;
+}
+.age-gate-panel h1 {
+  margin: 1.8rem 0 1rem;
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 6vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.25;
+}
+.age-gate-panel > p:not(.eyebrow) {
+  margin: 0 auto;
+  color: var(--muted);
+  font-family: var(--serif);
+  line-height: 1.9;
+}
+.age-gate-actions { margin-top: 2rem; display: grid; gap: .75rem; }
+.age-gate-actions button,
+.age-gate-actions a {
+  min-height: 48px;
+  padding: .85rem 1.2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  font-size: .82rem;
+}
+.age-gate-actions button { color: var(--paper); background: var(--ink); }
+.age-gate-actions button:hover { color: var(--paper); background: var(--accent); border-color: var(--accent); }
+.age-gate-actions a { color: var(--muted); background: transparent; border-color: var(--hairline); }
+.age-gate-actions a:hover { color: var(--ink); border-color: var(--ink); }
+.age-gate-panel .age-gate-privacy { margin-top: 1.5rem !important; font-family: var(--sans) !important; font-size: .68rem; }
+.age-gate-noscript { margin-top: 1rem !important; color: var(--accent) !important; }
+.age-gate-pending .article-page { visibility: hidden; }
+
 .article-page { width: min(900px, calc(100% - 3rem)); margin: 0 auto; }
 .article-hero { padding: 6rem 0 4rem; text-align: center; }
 .back-link { display: inline-block; margin-bottom: 4.5rem; color: var(--muted); font-size: .75rem; }
@@ -398,6 +464,8 @@ button { color: inherit; }
   .manifesto { padding: 5rem 0; grid-template-columns: 1fr; }
   .manifesto > p:not(.eyebrow) { grid-column: 1; }
   .site-footer { flex-direction: column; }
+  .age-gate { padding: 1rem; }
+  .age-gate-panel { padding: 2.2rem 1.4rem; }
   .article-page { width: min(100% - 2rem, 900px); }
   .article-hero { padding: 4rem 0 3rem; }
   .back-link { margin-bottom: 3rem; }

@@ -15,6 +15,16 @@ const featuredTitles = new Set([
   "一个车辆工程毕业生之死",
 ]);
 
+const restrictedContent = new Map([
+  ["立交桥", "性交易及毒品相关内容"],
+  ["船长", "性交易及性描写"],
+  ["波罗的海与蘑菇", "毒品使用及性相关内容"],
+  ["空姐，学妹和辣条", "性相关内容"],
+  ["在凌晨三点雨夜的上海骑小黄车是一件很朋克的事", "毒品使用及性相关内容"],
+  ["一个车辆工程毕业生之死", "性场所及性相关内容"],
+  ["下沉", "毒品及性相关内容"],
+]);
+
 const recommendationRank = new Map([
   ["狼王", 1],
   ["下沉", 2],
@@ -109,6 +119,7 @@ function parseArticle(filename) {
     minutes: Math.max(1, Math.round(charCount / 500)),
     tags: editorial[title] ?? ["作品"],
     featured: featuredTitles.has(title),
+    adultWarning: restrictedContent.get(title) ?? "",
     isNew: title === "近地飞行",
     rank: recommendationRank.get(title) ?? 999,
   };
@@ -256,7 +267,24 @@ function buildArticle(article, index, articles) {
   const source = article.originalUrl
     ? `<a href="${escapeHtml(article.originalUrl)}" target="_blank" rel="noreferrer">查看原始发布 ↗</a>`
     : "<span>AI 协作新作</span>";
-  const body = `<main id="main" class="article-page">
+  const ageGate = article.adultWarning
+    ? `<section class="age-gate" data-age-gate data-article="${escapeHtml(article.slug)}" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-describedby="age-gate-description">
+    <div class="age-gate-panel">
+      <p class="eyebrow">CONTENT NOTICE</p>
+      <strong class="age-gate-mark" aria-hidden="true">18+</strong>
+      <h1 id="age-gate-title">请先确认你的年龄</h1>
+      <p id="age-gate-description">《${escapeHtml(article.title)}》包含${escapeHtml(article.adultWarning)}，仅供已满18岁的读者阅读。</p>
+      <div class="age-gate-actions">
+        <button type="button" data-age-confirm>我已满18岁，继续阅读</button>
+        <a href="../../">未满18岁，返回作品页</a>
+      </div>
+      <p class="age-gate-privacy">确认结果仅保存在当前浏览器会话中。</p>
+      <noscript><p class="age-gate-noscript">需要启用 JavaScript 才能完成年龄确认。</p></noscript>
+    </div>
+  </section>`
+    : "";
+  const restrictionAttributes = article.adultWarning ? ' data-age-restricted inert aria-hidden="true"' : "";
+  const body = `${ageGate}<main id="main" class="article-page"${restrictionAttributes}>
     <article>
       <header class="article-hero">
         <a class="back-link" href="../../">← 返回作品档案</a>
@@ -283,7 +311,7 @@ ${article.isNew ? '        <strong class="ai-label article-ai-label">AI 创作</
     assetPrefix: "../../",
     homePrefix: "../../",
     body,
-    pageClass: "reading-page",
+    pageClass: `reading-page${article.adultWarning ? " age-restricted age-gate-pending" : ""}`,
   }));
 }
 

@@ -49,6 +49,36 @@ test("article pages retain long-form content and source metadata", () => {
   assert.match(flight, /Codex/);
 });
 
+test("adult articles require an 18+ confirmation before reading", () => {
+  const restricted = [
+    "立交桥",
+    "船长",
+    "波罗的海与蘑菇",
+    "空姐学妹和辣条",
+    "在凌晨三点雨夜的上海骑小黄车是一件很朋克的事",
+    "一个车辆工程毕业生之死",
+    "下沉",
+  ];
+
+  for (const folder of restricted) {
+    const html = fs.readFileSync(path.join(docs, "articles", folder, "index.html"), "utf8");
+    assert.match(html, /class="reading-page age-restricted age-gate-pending"/);
+    assert.match(html, /data-age-gate/);
+    assert.match(html, /data-age-confirm/);
+    assert.match(html, /main id="main" class="article-page" data-age-restricted inert aria-hidden="true"/);
+  }
+
+  const wolf = fs.readFileSync(path.join(docs, "articles", "狼王", "index.html"), "utf8");
+  assert.doesNotMatch(wolf, /data-age-gate/);
+
+  const home = fs.readFileSync(path.join(docs, "index.html"), "utf8");
+  assert.doesNotMatch(home, /class="content-label"/);
+
+  const script = fs.readFileSync(path.join(docs, "assets", "site.js"), "utf8");
+  assert.match(script, /sessionStorage\.getItem\(storageKey\)/);
+  assert.match(script, /sessionStorage\.setItem\(storageKey, "true"\)/);
+});
+
 test("every generated article has valid relative assets", () => {
   const folders = fs.readdirSync(path.join(docs, "articles"));
   for (const folder of folders) {
